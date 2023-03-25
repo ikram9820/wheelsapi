@@ -6,19 +6,19 @@ from . import views
 router = routers.DefaultRouter()
 
 router.register('vehicles', views.VehiclesViewSet, basename='vehicles')
-router.register('seller', views.SellerViewSet, basename='seller')
-router.register('like', views.LikeViewSet, basename='like')
+router.register('sellers', views.SellerViewSet, basename='sellers')
+router.register('saves', views.SaveViewSet, basename='saves')
 
 vehicle_router = routers.NestedDefaultRouter(
-    router, 'vehicles', lookup='vehicle')
+    router, 'vehicles', lookup='vehicles')
 vehicle_router.register(
     'images', views.VehicleImageViewSet, basename='vehicle-images')
 
-like_router = routers.NestedDefaultRouter(router, 'like', lookup='like')
-like_router.register('likes', views.LikedItemViewSet, basename='like-vehicles')
+save_router = routers.NestedDefaultRouter(router, 'saves', lookup='saves')
+save_router.register('saveditems', views.SavedItemViewSet, basename='saveditems')
 
-seller_router = routers.NestedDefaultRouter(router, 'seller', lookup='seller')
-seller_router.register('follow', views.FollowViewSet, basename='seller-follow')
+seller_router = routers.NestedDefaultRouter(router, 'sellers', lookup='sellers')
+seller_router.register('follows', views.FollowViewSet, basename='follows')
 
-urlpatterns = router.urls + like_router.urls + \
+urlpatterns = router.urls + save_router.urls + \
     vehicle_router.urls + seller_router.urls

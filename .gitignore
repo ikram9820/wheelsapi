@@ -2,7 +2,7 @@
 /media/
 /static/
 /*.log/
-/.venv/
+/venv/
 /general.log
 /staticfiles/
 /*sqlite3

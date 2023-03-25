@@ -1,9 +1,9 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-import socket
-hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
+# import socket
+# hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+# INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -17,9 +17,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'core',
     'showroom',
     'chat',
-    'core',
 
     'corsheaders',
     'django_filters',
@@ -48,6 +48,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 ]
+
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
+
 
 ROOT_URLCONF = 'config.urls'
 
@@ -96,8 +109,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
-STATIC_ROOT= os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+# STATIC_ROOT= os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL= '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -105,7 +118,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ALLOWED_ORIGINS = []
 
 REST_FRAMEWORK = {
     'COERCE_DECIMAL_TO_STRING': False,

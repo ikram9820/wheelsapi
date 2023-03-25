@@ -50,7 +50,7 @@ class VehiclesSerializer(serializers.ModelSerializer):
 #     images= ImageSerializer(read_only=True,many =True)
 #     class Meta:
 #         model= models.Vehicles
-#         fields= ['id','model','model_year','price','posting_date','distance_traveled','color','description','likes','images']
+#         fields= ['id','model','model_year','price','posting_date','distance_traveled','color','description','saves','images']
 
 
 class FollowSerializer(serializers.ModelSerializer):
@@ -92,12 +92,12 @@ class SellerSerializer(serializers.ModelSerializer):
 
   
 
-class LikedItemSerializer(serializers.ModelSerializer):
+class SavedItemSerializer(serializers.ModelSerializer):
     vehicle= VehiclesSerializer(read_only=True)
     vehicle_id= serializers.IntegerField(write_only=True)
                                             
     class Meta:
-        model= models.LikedItem
+        model= models.SavedItem
         fields=['id','vehicle_id','vehicle']
 
 
@@ -107,28 +107,28 @@ class LikedItemSerializer(serializers.ModelSerializer):
         return value
 
     def save(self, **kwargs):
-        like_id= self.context['like_id']
+        save_id= self.context['save_id']
         vehicle_id= self.validated_data['vehicle_id']
         try:
-            liked_item= models.LikedItem.objects.get(like_id=like_id,vehicle_id=vehicle_id)
-            liked_item.delete()
-            self.instance= liked_item
-        except models.LikedItem.DoesNotExist:
-            self.instance= models.LikedItem.objects.create(like_id=like_id,**self.validated_data)
+            saved_item= models.SavedItem.objects.get(save_id=save_id,vehicle_id=vehicle_id)
+            saved_item.delete()
+            self.instance= saved_item
+        except models.SavedItem.DoesNotExist:
+            self.instance= models.SavedItem.objects.create(save_id=save_id,**self.validated_data)
 
         return self.instance
 
 
 
-class LikeSerializer(serializers.ModelSerializer):
+class SaveSerializer(serializers.ModelSerializer):
 
     id = serializers.UUIDField(read_only= True)
     user_id= serializers.IntegerField(required=False)
-    liked_at= serializers.DateTimeField(read_only=True)
-    liked_item= LikedItemSerializer(many= True,read_only=True)
+    saved_at= serializers.DateTimeField(read_only=True)
+    saved_item= SavedItemSerializer(many= True,read_only=True)
     
     class Meta:
-        model= models.Like
-        fields= ['id','user_id','liked_at','liked_item']
+        model= models.Save
+        fields= ['id','user_id','saved_at','saved_item']
     
 

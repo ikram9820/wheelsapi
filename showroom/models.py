@@ -70,24 +70,24 @@ class VehicleImage(models.Model):
 
 
 
-class Like(models.Model):
+class Save(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like', null=True)
-    liked_at = models.DateTimeField(auto_now_add=True, null=True)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    saved_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self) -> str:
-        return f'like started by {self.user} at {self.liked_at}'
+        return f'save started by {self.user} at {self.saved_at}'
 
 
-class LikedItem(models.Model):
-    like = models.ForeignKey(
-        Like, on_delete=models.CASCADE, related_name='liked_item')
+class SavedItem(models.Model):
+    save = models.ForeignKey(
+        Save, on_delete=models.CASCADE, related_name='saved_item')
     vehicle = models.ForeignKey(
-        Vehicles, on_delete=models.CASCADE, related_name='liked_vehicle')
+        Vehicles, on_delete=models.CASCADE, related_name='saved_vehicle')
 
     def __str__(self) -> str:
-        return f'{self.vehicle} added to {self.like}'
+        return f'{self.vehicle} added to {self.save}'
 
     class Meta:
-        unique_together = [['like', 'vehicle']]
+        unique_together = [['save', 'vehicle']]

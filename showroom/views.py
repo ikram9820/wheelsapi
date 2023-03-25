@@ -92,23 +92,23 @@ class FollowViewSet(mixins.RetrieveModelMixin,
         return {'user_id': self.request.user.id, 'seller_id': self.kwargs['seller_pk']}
 
 
-class LikeViewSet(mixins.RetrieveModelMixin,
+class SaveViewSet(mixins.RetrieveModelMixin,
                   mixins.CreateModelMixin,
                   mixins.DestroyModelMixin,
                   GenericViewSet):
-    queryset = models.Like.objects.prefetch_related('liked_item__vehicle').all()
-    serializer_class = serializers.LikeSerializer
+    queryset = models.Save.objects.prefetch_related('saved_item__vehicle').all()
+    serializer_class = serializers.SaveSerializer
 
 
-class LikedItemViewSet(mixins.ListModelMixin,
+class SavedItemViewSet(mixins.ListModelMixin,
                        mixins.RetrieveModelMixin,
                        mixins.CreateModelMixin,
                        GenericViewSet):
-    serializer_class = serializers.LikedItemSerializer
+    serializer_class = serializers.SavedItemSerializer
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return models.LikedItem.objects.filter(like_id=self.kwargs['like_pk']).select_related('vehicle')
+        return models.SavedItem.objects.filter(save_id=self.kwargs['save_pk']).select_related('vehicle')
 
     def get_serializer_context(self):
-        return {'like_id': self.kwargs['like_pk']}
+        return {'save_id': self.kwargs['save_pk']}

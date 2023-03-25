@@ -20,12 +20,12 @@ class VehiclesAdmin(admin.ModelAdmin):
     def car_name(self,vehicle):
         return f'{vehicle.manufacturer}, {vehicle.model} {vehicle.model_year}'
 
-    # @admin.display(ordering='likes')
-    # def like_rate(self,vehicle):
-    #     if(vehicle.likes==None):
+    # @admin.display(ordering='saves')
+    # def save_rate(self,vehicle):
+    #     if(vehicle.saves==None):
     #         return 'Low rated vehicle'
             
-    #     if vehicle.likes <100:
+    #     if vehicle.saves <100:
     #         return 'Low rated vehicle'
     #     return 'High rated vehicle'
 
@@ -61,10 +61,10 @@ class UserAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(models.Like)
-class LikeAdmin(admin.ModelAdmin):
+@admin.register(models.Save)
+class SaveAdmin(admin.ModelAdmin):
     list_select_related= ['user']
 
-@admin.register(models.LikedItem)
-class LikedItemAdmin(admin.ModelAdmin):
-    list_select_related= ['like__user','vehicle']
+@admin.register(models.SavedItem)
+class SavedItemAdmin(admin.ModelAdmin):
+    list_select_related= ['save__user','vehicle']
